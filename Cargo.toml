@@ -1,9 +1,9 @@
 [package]
-name = "hack-computer"
+name = "nand-computer"
 description = "A completely-from-scratch general-purpose computer hardware."
 authors = ["Yazalde Filimone <yazaldefilimon@gmail.com>"]
 license = "Apache-2.0"
-repository = "https://github.com/yazaldefilimone/hack-computer"
+repository = "https://github.com/yazaldefilimone/nand-computer"
 version = "0.1.0"
 edition = "2021"
 
