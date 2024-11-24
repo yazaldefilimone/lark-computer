@@ -1,9 +1,7 @@
-#![allow(dead_code)]
 pub type Bit = u8;
-pub type Bit2 = [Bit; 2];
-pub type Bit3 = [Bit; 3];
-pub type Bit16 = [Bit; 16];
+pub type Bit4 = [Bit; 4];
 pub type Bit8 = [Bit; 8];
+pub type Bit16 = [Bit; 16];
 
 // NAND GATE (BASE)
 // a  | b  | ->
@@ -106,6 +104,60 @@ pub fn or_8_way(n: Bit8) -> Bit8 {
   let mut out = [0; 8];
   for (pos, bit) in n.into_iter().enumerate() {
     out[pos] = or(bit, out[pos]);
+  }
+  return out;
+}
+
+/*
+ | a  | b  |  sum  | carry
+ +----+----+-------+-------
+ |  0 |  0 |   0  |  0  |
+ |  0 |  1 |   0  |  0  |
+ |  1 |  0 |   0  |  0  |
+ |  1 |  1 |   1  |  1  |
+*/
+pub fn half_adder(a: Bit, b: Bit) -> (Bit, Bit) {
+  let sum = xor(a, b);
+  let carry = and(a, b);
+  (sum, carry)
+}
+
+/*
+ | a  | b  | c |  sum | carry
+ +----+----+---+------+-------
+ |  0 |  0 | 0 |   0  |  0  |
+ |  0 |  1 | 0 |   0  |  0  |
+ |  0 |  0 | 1 |   0  |  0  |
+ |  0 |  1 | 1 |   0  |  0  |
+ |  1 |  0 | 0 |   0  |  0  |
+ |  1 |  1 | 0 |   0  |  0  |
+ |  1 |  0 | 1 |   0  |  0  |
+ |  1 |  1 | 1 |   1  |  1  |
+*/
+pub fn full_adder(a: Bit, b: Bit, c: Bit) -> (Bit, Bit) {
+  let (sum_one, carry_one) = half_adder(a, b);
+  let (sum_two, carry_two) = half_adder(sum_one, c);
+  (sum_two, or(carry_one, carry_two))
+}
+
+pub fn add_16(a: Bit16, b: Bit16) -> Bit16 {
+  let mut out = [0; 16];
+  let mut carry = 0;
+  for pos in (0..16).rev() {
+    let (sum, new_carry) = full_adder(a[pos], b[pos], carry);
+    out[pos] = sum;
+    carry = new_carry;
+  }
+  return out;
+}
+
+pub fn inc_16(a: Bit16) -> Bit16 {
+  let mut out = [0; 16];
+  let mut carry = 0;
+  for pos in (0..16).rev() {
+    let (sum, new_carry) = full_adder(a[pos], 1, carry);
+    out[pos] = sum;
+    carry = new_carry;
   }
   return out;
 }

@@ -1,6 +1,8 @@
 #![allow(dead_code)]
-use crate::gates::{Bit, Bit16, Bit2, Bit3};
+use crate::gates::{Bit, Bit16};
 
+type Bit2 = [Bit; 2];
+type Bit3 = [Bit; 3];
 // MULTIPLEXER GATE
 //
 // sel | ->
