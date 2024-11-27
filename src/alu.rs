@@ -132,11 +132,7 @@ impl ALU {
   }
 
   fn fn_out(&mut self) {
-    if self.f == 1 {
-      self.out = gates::add_16(self.x, self.y);
-    } else {
-      self.out = gates::and_16(self.x, self.y);
-    }
+    self.out = if self.f == 1 { gates::add_16(self.x, self.y) } else { gates::and_16(self.x, self.y) };
   }
 
   fn negate_out(&mut self) {
@@ -151,10 +147,11 @@ impl ALU {
   }
 
   fn negate_flag(&mut self) {
-    self.ng = if self.out < [0; 16] { 1 } else { 0 };
+    // NG: true (1) if MSB (most significant bit) is 1
+    self.ng = self.out[0]; // MSB indicates negativity in two's complement
   }
 
-  pub fn exc(&mut self) -> (Bit16, Bit, Bit) {
+  pub fn execute(&mut self) -> (Bit16, Bit, Bit) {
     // 1.
     self.zero_x();
     self.negate_x();
@@ -173,13 +170,21 @@ impl ALU {
 
   // debug
   pub fn show(&self) {
-    println!("+ ---------------------------------- +");
-    println!("| zx | nx | zy | ny | f | no |  out  |");
-    println!("+ ---------------------------------- +");
+    println!(" x =  {:?}", self.x.map(|x| format!("{:b}", x)).join(""));
+    println!(" y =  {:?}", self.y.map(|x| format!("{:b}", x)).join(""));
+    println!("+ -------------------------------------------------- +");
+    println!("| zx | nx | zy | ny | f | no |          out          |");
+    println!("+ -------------------------------------------------- +");
     println!(
-      "|  {} |  {} |  {} |  {} |  {} |  {} |  {:?}  |",
-      self.zx, self.nx, self.zy, self.ny, self.f, self.no, self.out
+      "|  {} |  {} |  {} |  {} | {} | {}  |   {:?}  |",
+      self.zx,
+      self.nx,
+      self.zy,
+      self.ny,
+      self.f,
+      self.no,
+      self.out.map(|x| format!("{:b}", x)).join("")
     );
-    println!("+ ---------------------------------- +");
+    println!("+ -------------------------------------------------- +");
   }
 }
