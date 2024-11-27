@@ -2,6 +2,7 @@
 use super::ram8::RAM8;
 use crate::gates::{self, Bit16};
 
+#[derive(Clone, Copy)]
 pub struct RAM64 {
   ram8s: [RAM8; 8],
 }
