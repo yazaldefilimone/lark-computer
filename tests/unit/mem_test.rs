@@ -5,10 +5,54 @@ mod mem_test {
     mem::{self},
   };
 
+  // DFF cases test
+  #[test]
+  fn test_dff() {
+    let mut dff = mem::register::DFF::default();
+
+    // tick the DFF
+    dff.tick(1);
+
+    // read the output
+    let output = dff.output();
+
+    // verify the output
+    assert_eq!(output, 1);
+  }
+
+  // Bit cases test
+  #[test]
+  fn test_bit() {
+    let mut bit = mem::register::Bit::default();
+
+    // tick the Bit
+    bit.tick(1, 0);
+
+    // read the output
+    let output = bit.output();
+
+    // verify the output
+    assert_eq!(output, 0);
+  }
+
+  #[test]
+  fn test_bit_load() {
+    let mut bit = mem::register::Bit::default();
+
+    // tick the Bit
+    bit.tick(1, 1);
+
+    // read the output
+    let output = bit.output();
+
+    // verify the output
+    assert_eq!(output, 1);
+  }
+
   // 8-bits RAM cases test
   #[test]
   fn test_ram8_write_and_read() {
-    let mut ram = mem::RAM8::default();
+    let mut ram = mem::ram8::RAM8::default();
 
     let address = [1, 0, 1]; // address 5
     let input: Bit16 = [1; 16]; // input all ones
@@ -26,7 +70,7 @@ mod mem_test {
 
   #[test]
   fn test_ram8_no_write() {
-    let mut ram = mem::RAM8::default();
+    let mut ram = mem::ram8::RAM8::default();
 
     let address = [0, 1, 0]; // address 2
     let input: Bit16 = [1; 16]; // input all ones
@@ -44,7 +88,7 @@ mod mem_test {
 
   #[test]
   fn test_ram8_multiple_addresses() {
-    let mut ram = mem::RAM8::default();
+    let mut ram = mem::ram8::RAM8::default();
 
     let address1 = [0, 0, 1]; // address 1
     let address2 = [1, 0, 0]; // address 4
@@ -70,7 +114,7 @@ mod mem_test {
 
   #[test]
   fn test_ram8_overwrite() {
-    let mut ram = mem::RAM8::default();
+    let mut ram = mem::ram8::RAM8::default();
 
     let address = [0, 1, 1]; // address 3
     let input1: Bit16 = [1; 16]; // first input
@@ -92,7 +136,7 @@ mod mem_test {
   // 64-bits RAM cases test
   #[test]
   fn test_ram64_write_and_read() {
-    let mut ram = mem::RAM64::default();
+    let mut ram = mem::ram64::RAM64::default();
 
     let address = [1, 0, 1, 0, 1, 0]; // address 63
     let input: Bit16 = [1; 16]; // input all ones
@@ -110,7 +154,7 @@ mod mem_test {
 
   #[test]
   fn test_ram64_no_write() {
-    let mut ram = mem::RAM64::default();
+    let mut ram = mem::ram64::RAM64::default();
 
     let address = [0, 1, 0, 0, 1, 0]; // address 32
     let input: Bit16 = [1; 16]; // input all ones
@@ -128,7 +172,7 @@ mod mem_test {
 
   #[test]
   fn test_ram64_multiple_addresses() {
-    let mut ram = mem::RAM64::default();
+    let mut ram = mem::ram64::RAM64::default();
 
     let address1 = [0, 0, 1, 0, 0, 1]; // address 1
     let address2 = [1, 0, 0, 1, 0, 0]; // address 32
@@ -154,7 +198,7 @@ mod mem_test {
 
   #[test]
   fn test_ram64_overwrite() {
-    let mut ram = mem::RAM64::default();
+    let mut ram = mem::ram64::RAM64::default();
 
     let address = [0, 1, 1, 0, 1, 1]; // address 33
     let input1: Bit16 = [1; 16]; // first input

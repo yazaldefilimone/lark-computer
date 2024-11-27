@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 pub type Bit = u8;
 pub type Bit4 = [Bit; 4];
 pub type Bit8 = [Bit; 8];
