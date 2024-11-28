@@ -1,4 +1,9 @@
 pub mod alu_test;
 pub mod cpu_test;
 pub mod gates_test;
-pub mod mem_test;
+pub mod ram16k_test;
+pub mod ram4k_test;
+pub mod ram512_test;
+pub mod ram64_test;
+pub mod ram8_test;
+pub mod register_test;
